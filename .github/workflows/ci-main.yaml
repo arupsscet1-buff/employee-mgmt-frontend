@@ -19,6 +19,7 @@ permissions:
     contents: read
     security-events: write
     actions: read
+    packages: read
 
 env:
     AWS_REGION: ap-south-1
