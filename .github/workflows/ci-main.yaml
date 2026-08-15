@@ -75,13 +75,13 @@ jobs:
             - name: Install Dependencies
               run: npm ci
 
-            - name: Install Dependencies
+            - name: Audit Dependencies
               run: npm audit
 
-            - name: Install Dependencies
-              run: npm test
+            - name: Test Application
+              run: npm test run
 
-            - name: Install Dependencies
+            - name: Lint Code
               run: npm run lint
 
             - name: SAST using CodeQL
