@@ -1,0 +1,80 @@
+name: Employee Management System Frontend
+description: This is the frontend application for the Employee Management System, built using React.
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+    workflow_dispatch:
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    contents: read
+
+env:
+    NODE_VERSION: 24
+    SERVICE_NAME: frontend
+    REGISTRY_URL: aaaaaaaaaaaa
+    IMAGE_NAME: ${{ vars.REGISTRY_URL }}/frontend
+    IMAGE_TAG: ${{ github.sha }}
+
+
+jobs:
+    build-test-scan:
+        name: Build, Test and Scan
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout source code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v7
+              with:
+                node-version: '${{ env.NODE_VERSION }}'
+                cache: 'npm'
+                cache-dependency-path: '**/package-lock.json'
+
+            - name: Initialize CodeQL
+              uses: github/codeql-action/init@v4
+              with:
+                languages: javascript
+                build-mode: manual
+
+            - name: Install Dependencies
+              run: npm ci
+
+            - name: Install Dependencies
+              run: npm audit
+
+            - name: Install Dependencies
+              run: npm test
+
+            - name: Install Dependencies
+              run: npm run lint
+
+            - name: SAST using CodeQL
+              uses: github/codeql-action/analyze@v4
+              with:
+                category: '/language:javascript'
+
+            - name: Build Production Assets
+              run: npm run build
+            
+            - name: Package Artifact
+              run: tar -czf frontend-artifact.tar.gz -C dist .
+
+            - name: Upload artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                name: frontend-artifacts-${{ github.run_id }}
+                path: frontend-artifact.tar.gz
+                if-no-files-found: error
+                retention-days: 1
+
+
