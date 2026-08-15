@@ -41,26 +41,26 @@ jobs:
             #       "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" \
             #     | jq -r .value | cut -d. -f2 | base64 -d 2>/dev/null | jq .
 
-            - name: Configure AWS credentials via OIDC
-              uses: aws-actions/configure-aws-credentials@v4
-              with:
-                role-to-assume: arn:aws:iam::748624204530:role/github-actions-role
-                aws-region: ${{ env.AWS_REGION }}
+            # - name: Configure AWS credentials via OIDC
+            #   uses: aws-actions/configure-aws-credentials@v4
+            #   with:
+            #     role-to-assume: arn:aws:iam::748624204530:role/github-actions-role
+            #     aws-region: ${{ env.AWS_REGION }}
 
-            - name: Fetch GitHub token from Secrets Manager
-              id: getcred
-              run: |
-                SECRET_JSON=$(aws secretsmanager get-secret-value \
-                  --secret-id github/accountcredential \
-                  --query SecretString --output text)
-                TOKEN=$(echo "$SECRET_JSON" | jq -r .token)
-                echo "::add-mask::$TOKEN"
-                echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+            # - name: Fetch GitHub token from Secrets Manager
+            #   id: getcred
+            #   run: |
+            #     SECRET_JSON=$(aws secretsmanager get-secret-value \
+            #       --secret-id github/accountcredential \
+            #       --query SecretString --output text)
+            #     TOKEN=$(echo "$SECRET_JSON" | jq -r .token)
+            #     echo "::add-mask::$TOKEN"
+            #     echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
 
             - name: Checkout source code
               uses: actions/checkout@v4
-              with:
-               token: ${{ steps.getcred.outputs.token }}
+              # with:
+              #  token: ${{ steps.getcred.outputs.token }}
 
             - name: Setup Node.js
               uses: actions/setup-node@v7
