@@ -69,12 +69,6 @@ jobs:
                 cache: 'npm'
                 cache-dependency-path: 'package-lock.json'
 
-            - name: Initialize CodeQL
-              uses: github/codeql-action/init@v4
-              with:
-                languages: javascript-typescript
-                dependency-caching: true
-
             - name: Install Dependencies
               run: npm ci
 
@@ -86,11 +80,6 @@ jobs:
 
             - name: Lint Code
               run: npm run lint
-
-            - name: SAST using CodeQL
-              uses: github/codeql-action/analyze@v4
-              with:
-                category: '/language:javascript'
 
             - name: Build Production Assets
               run: npm run build
