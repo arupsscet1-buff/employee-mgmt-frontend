@@ -17,6 +17,7 @@ concurrency:
 permissions:
     id-token: write
     contents: read
+    security-events: read
 
 env:
     AWS_REGION: ap-south-1
@@ -70,7 +71,6 @@ jobs:
               uses: github/codeql-action/init@v4
               with:
                 languages: javascript
-                build-mode: manual
 
             - name: Install Dependencies
               run: npm ci
