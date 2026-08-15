@@ -91,7 +91,7 @@ jobs:
               run: tar -czf frontend-artifact.tar.gz -C dist .
 
             - name: Upload artifacts
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                 name: frontend-artifacts-${{ github.run_id }}
                 path: frontend-artifact.tar.gz
