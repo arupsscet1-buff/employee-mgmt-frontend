@@ -27,7 +27,7 @@ env:
     SERVICE_NAME: frontend-app
     REGISTRY_URL: 748624204530.dkr.ecr.ap-south-1.amazonaws.com
     IMAGE_NAME: ${{ vars.REGISTRY_URL }}/frontend-app
-    IMAGE_TAG: ${{ github.sha ::7 }}
+    IMAGE_TAG: ${{ github.sha }}
 
 
 jobs:
