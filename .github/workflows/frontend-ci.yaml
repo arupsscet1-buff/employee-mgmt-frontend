@@ -211,6 +211,7 @@ jobs:
 
             - name: Update image tags
               run: >
+                  ls -la
                   yq -i '.*.image.tag = \"${IMAGE_TAG}\"' values.yaml"
                   yq -i '.appVersion = \"${IMAGE_TAG}\"' Chart.yaml"
 
