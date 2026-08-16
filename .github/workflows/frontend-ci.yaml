@@ -208,6 +208,7 @@ jobs:
               with:
                 repository: 'arupsscet1-buff/frontend-helmChart'
                 fetch-depth: 0
+                persist-credentials: false
 
             - name: Update image tags
               run: |
