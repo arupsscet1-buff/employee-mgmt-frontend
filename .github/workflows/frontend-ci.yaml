@@ -190,7 +190,7 @@ jobs:
             - name: Configure AWS credentials via OIDC
               uses: aws-actions/configure-aws-credentials@v4
               with:
-                role-to-assume: arn:aws:iam::748624204530:role/github-actions-role
+                role-to-assume: ${{ secrets.AWS_ECR_ROLE_ARN }}
                 aws-region: ${{ env.AWS_REGION }}
 
             - name: Fetch GitHub token from Secrets Manager
@@ -206,7 +206,7 @@ jobs:
             - name: Checkout source code
               uses: actions/checkout@v4
               with:
-                repository: 'https://github.com/arupsscet1-buff/frontend-helmChart.git'
+                repository: 'arupsscet1-buff/frontend-helmChart.git'
                 fetch-deph: 0
 
             - name: Update image tags
