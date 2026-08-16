@@ -226,9 +226,6 @@ jobs:
                 echo "Current Chart.yaml:"
                 cat Chart.yaml
 
-                echo "yq version:"
-                yq --version
-
                 echo "IMAGE_TAG=${IMAGE_TAG}"
 
                 yq -i '.image.tag = strenv(IMAGE_TAG)' values.yaml
