@@ -82,16 +82,16 @@ jobs:
             - name: Build Production Assets
               run: npm run build
             
-            - name: Package Artifact
-              run: tar -czf frontend-artifact.tar.gz -C dist .
+            # - name: Package Artifact
+            #   run: tar -czf frontend-artifact.tar.gz -C dist .
 
-            - name: Upload artifacts
-              uses: actions/upload-artifact@v4
-              with:
-                name: frontend-artifacts-${{ github.run_id }}
-                path: frontend-artifact.tar.gz
-                if-no-files-found: error
-                retention-days: 1
+            # - name: Upload artifacts
+            #   uses: actions/upload-artifact@v4
+            #   with:
+            #     name: frontend-artifacts-${{ github.run_id }}
+            #     path: frontend-artifact.tar.gz
+            #     if-no-files-found: error
+            #     retention-days: 1
 
     analyze:
       name: CodeQL Analysis
