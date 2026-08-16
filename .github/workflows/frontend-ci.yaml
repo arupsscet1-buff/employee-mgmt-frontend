@@ -56,7 +56,7 @@ jobs:
             #     echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
 
             - name: Checkout source code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
               # with:
               #  token: ${{ steps.getcred.outputs.token }}
 
@@ -100,7 +100,7 @@ jobs:
 
       steps:
         - name: Checkout source code
-          uses: actions/checkout@v4
+          uses: actions/checkout@v7
           with:
             fetch-depth: 0
 
@@ -133,7 +133,7 @@ jobs:
               uses: aws-actions/amazon-ecr-login@v2
 
             - name: Checkout source code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
               with:
                 fetch-depth: 0
 
@@ -204,10 +204,10 @@ jobs:
                 echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
 
             - name: Checkout source code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
               with:
-                repository: 'arupsscet1-buff/frontend-helmChart.git'
-                fetch-deph: 0
+                repository: 'arupsscet1-buff/frontend-helmChart'
+                fetch-depth: 0
 
             - name: Update image tags
               run: >
