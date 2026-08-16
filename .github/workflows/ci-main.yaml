@@ -93,11 +93,31 @@ jobs:
                 if-no-files-found: error
                 retention-days: 1
 
+    analyze:
+      name: CodeQL Analysis
+      runs-on: ubuntu-latest
+      needs: build-test-scan
+
+      steps:
+        - name: Checkout source code
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
+        - name: Initialize CodeQL
+          uses: github/codeql-action/init@v4
+          with:
+            languages: javascript-typescript
+            dependency-caching: true
+
+        - name: Analyze
+          uses: github/codeql-action/analyze@v4
               
     Publish-Artifact:
         name: Build Scan and publish image to ECR
         runs-on: ubuntu-latest
-        needs: build-test-scan
+        needs: [build-test-scan,analyze]
+        if: needs.build-test-scan.result=='success' && needs.analyze.result=='success'
         steps:
             - name: Configure AWS credentials via OIDC
               uses: aws-actions/configure-aws-credentials@v4
@@ -114,6 +134,8 @@ jobs:
 
             - name: Checkout source code
               uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
 
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3

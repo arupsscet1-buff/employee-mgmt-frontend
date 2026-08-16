@@ -1,16 +1,34 @@
-# React + Vite
+# Employee Management Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small React + Vite implementation of the frontend functionality from `sunnysinghssvk/spring-boot-react-js`.
 
-Currently, two official plugins are available:
+The original project uses Create React App, Axios, Reactstrap and Toastify. This version keeps the same backend contract and CRUD functionality but removes those unnecessary frontend dependencies so the DevSecOps pipeline has a much smaller dependency tree.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Backend API
 
-## React Compiler
+Default backend base URL:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+`http://localhost:8080/developer`
 
-## Expanding the ESLint configuration
+Endpoints used:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- `GET /getAllDeveloper?pageNumber=0&pageSize=8`
+- `POST /create`
+- `PUT /update`
+- `DELETE /deleteById/{id}`
+
+Set `VITE_API_URL` for another environment.
+
+## Local development
+
+```bash
+npm install
+npm run lint
+npm test
+npm run build
+npm run dev
+```
+
+## CI
+
+Commit the generated `package-lock.json` after the first `npm install`, then use `npm ci` in GitHub Actions.
