@@ -210,7 +210,7 @@ jobs:
                 fetch-depth: 0
 
             - name: Update image tags
-              run: >
+              run: |
                   ls -la
                   yq -i '.*.image.tag = \"${IMAGE_TAG}\"' values.yaml"
                   yq -i '.appVersion = \"${IMAGE_TAG}\"' Chart.yaml"
