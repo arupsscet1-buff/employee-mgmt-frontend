@@ -180,3 +180,49 @@ jobs:
                 provenance: mode=max
                 sbom: true
                 cache-from: type=gha
+
+    update-helm-values:
+      name: Update Image Tag on Helm Charts
+      runs-on: ubuntu-latest
+      needs: [Publish-Artifact]
+      if: needs.Publish-Artifact.result=='success'
+      steps:
+            - name: Configure AWS credentials via OIDC
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                role-to-assume: arn:aws:iam::748624204530:role/github-actions-role
+                aws-region: ${{ env.AWS_REGION }}
+
+            - name: Fetch GitHub token from Secrets Manager
+              id: getcred
+              run: |
+                SECRET_JSON=$(aws secretsmanager get-secret-value \
+                  --secret-id github/accountcredential \
+                  --query SecretString --output text)
+                TOKEN=$(echo "$SECRET_JSON" | jq -r .token)
+                echo "::add-mask::$TOKEN"
+                echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+
+            - name: Checkout source code
+              uses: actions/checkout@v4
+              with:
+                repository: 'https://github.com/arupsscet1-buff/frontend-helmChart.git'
+                fetch-deph: 0
+
+            - name: Update image tags
+              run: >
+                  yq -i '.*.image.tag = \"${IMAGE_TAG}\"' values.yaml"
+                  yq -i '.appVersion = \"${IMAGE_TAG}\"' Chart.yaml"
+
+                  git config --global --add safe.directory .
+                  git config user.name "arupsscet1-buff"
+                  git config user.email "arupsscet1@gmail.com"
+
+                  git remote set-url origin https://arupsscet1-buff:${{ steps.getcred.outputs.token }}@github.com/arupsscet1-buff/frontend-helmChart.git
+
+                  git add values.yaml
+
+                  git diff --cached --quiet || \
+                  git commit -m "Update service images to ${IMAGE_TAG}"
+
+                  git push origin HEAD:main
